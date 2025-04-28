@@ -3,9 +3,9 @@ from pyrogram import Client, filters
 from pyrogram.types import Message
 
 # Bot configuration
-API_ID = 19593445    # replace with your API_ID
-API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"  # replace with your API_HASH
-BOT_TOKEN = "7558999351:AAG0N7kKfEv-ZwQMqMqo6TM84zmHSvuMNoE"  # replace with your bot token
+API_ID = 19593445
+API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"
+BOT_TOKEN = "7558999351:AAG0N7kKfEv-ZwQMqMqo6TM84zmHSvuMNoE"
 
 # Create bot instance
 app = Client(
@@ -19,20 +19,23 @@ app = Client(
 OLD_LINK = "https://www.jalwawin3.com/#/register?invitationCode=25587256605"
 NEW_LINK = "https://www.jalwagame4.com/#/register?invitationCode=35818757916"
 
-# Message format
-NEW_MESSAGE = f"""Register Link 👇🥳🎰💰
-{NEW_LINK}
-Prediction Only For 👉 {NEW_LINK} 👈
-"""
-
-# Handler to monitor messages
+# Handler
 @app.on_message(filters.channel)
-async def replace_message(client: Client, message: Message):
-    if OLD_LINK in message.text:
-        try:
-            await message.edit_text(NEW_MESSAGE)
-        except Exception as e:
-            print(f"Failed to edit message: {e}")
+async def replace_caption(client: Client, message: Message):
+    if message.caption and OLD_LINK in message.caption:
+        new_caption = message.caption.replace(OLD_LINK, NEW_LINK)
 
-# Run the bot
+        # Also update "CLICK HERE" text part
+        new_caption = new_caption.replace(
+            "Prediction Only For 👉 CLICK HERE 👈",
+            f"Prediction Only For 👉 {NEW_LINK} 👈"
+        )
+
+        try:
+            await message.edit_caption(new_caption, parse_mode="HTML")
+            print("Caption edited successfully.")
+        except Exception as e:
+            print(f"Failed to edit caption: {e}")
+
+# Run bot
 app.run()
