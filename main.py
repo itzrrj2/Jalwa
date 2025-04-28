@@ -1,4 +1,3 @@
-import os
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
@@ -32,7 +31,7 @@ async def replace_caption(client: Client, message: Message):
         )
 
         try:
-            await message.edit_caption(new_caption, parse_mode="HTML")
+            await message.edit_caption(new_caption, parse_mode="Markdown")
             print("Caption edited successfully.")
         except Exception as e:
             print(f"Failed to edit caption: {e}")
