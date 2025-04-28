@@ -1,4 +1,3 @@
-import html
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
@@ -28,21 +27,14 @@ async def replace_caption(client: Client, message: Message):
         # Replace link
         new_caption = new_caption.replace(OLD_LINK, NEW_LINK)
 
-        # Replace "CLICK HERE" with new URL properly underlined and bold
+        # Replace "CLICK HERE" with the new URL
         new_caption = new_caption.replace(
             "CLICK HERE",
-            f"<u><b>{NEW_LINK}</b></u>"
+            f"{NEW_LINK}"
         )
 
-        # Escape full caption safely
-        safe_caption = html.escape(new_caption)
-        
-        # After escaping, manually re-insert tags
-        safe_caption = safe_caption.replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>")
-        safe_caption = safe_caption.replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>")
-
         try:
-            await message.edit_caption(safe_caption, parse_mode="HTML")
+            await message.edit_caption(new_caption)  # ❗ No parse_mode
             print("Caption edited successfully.")
         except Exception as e:
             print(f"Failed to edit caption: {e}")
