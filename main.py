@@ -1,10 +1,11 @@
+import html
 from pyrogram import Client, filters
 from pyrogram.types import Message
 
 # Bot configuration
 API_ID = 19593445
 API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"
-BOT_TOKEN = "7834936430:AAFL6GZDWXeSbZaJ870dSN6wdZObWrrvTrc"
+BOT_TOKEN = "7558999351:AAG0N7kKfEv-ZwQMqMqo6TM84zmHSvuMNoE"
 
 # Create bot instance
 app = Client(
@@ -33,8 +34,15 @@ async def replace_caption(client: Client, message: Message):
             f"<u><b>{NEW_LINK}</b></u>"
         )
 
+        # Escape full caption safely
+        safe_caption = html.escape(new_caption)
+        
+        # After escaping, manually re-insert tags
+        safe_caption = safe_caption.replace("&lt;b&gt;", "<b>").replace("&lt;/b&gt;", "</b>")
+        safe_caption = safe_caption.replace("&lt;u&gt;", "<u>").replace("&lt;/u&gt;", "</u>")
+
         try:
-            await message.edit_caption(new_caption, parse_mode="HTML")
+            await message.edit_caption(safe_caption, parse_mode="HTML")
             print("Caption edited successfully.")
         except Exception as e:
             print(f"Failed to edit caption: {e}")
