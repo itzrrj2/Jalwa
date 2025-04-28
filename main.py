@@ -21,17 +21,20 @@ NEW_LINK = "https://www.jalwagame4.com/#/register?invitationCode=35818757916"
 # Handler
 @app.on_message(filters.channel)
 async def replace_caption(client: Client, message: Message):
-    if message.caption and OLD_LINK in message.caption:
-        new_caption = message.caption.replace(OLD_LINK, NEW_LINK)
+    if message.caption and (OLD_LINK in message.caption or "CLICK HERE" in message.caption):
+        new_caption = message.caption
 
-        # Also update "CLICK HERE" text part
+        # Replace link
+        new_caption = new_caption.replace(OLD_LINK, NEW_LINK)
+
+        # Replace "CLICK HERE" with new URL properly underlined and bold
         new_caption = new_caption.replace(
-            "Prediction Only For 👉 CLICK HERE 👈",
-            f"Prediction Only For 👉 {NEW_LINK} 👈"
+            "CLICK HERE",
+            f"<u><b>{NEW_LINK}</b></u>"
         )
 
         try:
-            await message.edit_caption(new_caption)  # ❗ No parse_mode here
+            await message.edit_caption(new_caption, parse_mode="HTML")
             print("Caption edited successfully.")
         except Exception as e:
             print(f"Failed to edit caption: {e}")
