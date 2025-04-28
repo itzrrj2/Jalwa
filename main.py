@@ -10,7 +10,7 @@ BOT_TOKEN = "7834936430:AAFL6GZDWXeSbZaJ870dSN6wdZObWrrvTrc"
 
 # Channels list
 CHANNEL_IDS = ["-1002639969488", "-1002372000442"]
-# Example: ["jalwawin", "jalwagame4"] or private ids like ["-1001234567890", "-1009876543210"]
+# Example: ["jalwawin", "jalwagame4"] or ["-1001234567890", "-1009876543210"]
 
 # Create bot instance
 app = Client(
@@ -45,30 +45,32 @@ async def process_message(message: Message):
         except Exception as e:
             print(f"Failed to edit message ID {message.id}: {e}")
 
-# When a new message arrives
 @app.on_message(filters.channel)
 async def on_new_message(client: Client, message: Message):
     if str(message.chat.id) in CHANNEL_IDS or message.chat.username in CHANNEL_IDS:
         await process_message(message)
 
-# When a message is edited later
 @app.on_edited_message(filters.channel)
 async def on_edited_message(client: Client, message: Message):
     if str(message.chat.id) in CHANNEL_IDS or message.chat.username in CHANNEL_IDS:
         await process_message(message)
 
-# When bot starts, scan old messages
-@app.on_start()
-async def on_start(client: Client):
+async def main():
+    await app.start()
+    print("Bot Started.")
+
     print("Scanning old messages for all channels...")
     for chat_id in CHANNEL_IDS:
         try:
-            async for message in client.get_chat_history(chat_id, limit=500):
+            async for message in app.get_chat_history(chat_id, limit=500):
                 await process_message(message)
             print(f"Finished scanning chat: {chat_id}")
         except Exception as e:
             print(f"Failed to scan chat {chat_id}: {e}")
     print("Old messages scan complete.")
 
-# Run bot
-app.run()
+    await idle()  # To keep the bot alive
+
+if __name__ == "__main__":
+    from pyrogram import idle
+    asyncio.run(main())
