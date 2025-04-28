@@ -18,26 +18,37 @@ app = Client(
 OLD_LINK = "https://www.jalwawin3.com/#/register?invitationCode=25587256605"
 NEW_LINK = "https://www.jalwagame4.com/#/register?invitationCode=35818757916"
 
-# Handler
+# Handler for all channel messages
 @app.on_message(filters.channel)
-async def replace_caption(client: Client, message: Message):
+async def edit_message(client: Client, message: Message):
+    text_to_edit = None
+
+    # Case 1: If message has a caption (photo/video etc.)
     if message.caption and (OLD_LINK in message.caption or "CLICK HERE" in message.caption):
-        new_caption = message.caption
+        text_to_edit = message.caption
 
-        # Replace link
-        new_caption = new_caption.replace(OLD_LINK, NEW_LINK)
+    # Case 2: If message is a normal text message
+    elif message.text and (OLD_LINK in message.text or "CLICK HERE" in message.text):
+        text_to_edit = message.text
 
-        # Replace "CLICK HERE" with the new URL
-        new_caption = new_caption.replace(
+    if text_to_edit:
+        # Replace old register link with new one
+        updated_text = text_to_edit.replace(OLD_LINK, NEW_LINK)
+
+        # Replace "CLICK HERE" with the new link
+        updated_text = updated_text.replace(
             "CLICK HERE",
             f"{NEW_LINK}"
         )
 
         try:
-            await message.edit_caption(new_caption)  # ❗ No parse_mode
-            print("Caption edited successfully.")
+            if message.caption:
+                await message.edit_caption(updated_text)  # Edit caption if it was a photo/video
+            else:
+                await message.edit_text(updated_text)      # Edit text if it was a text message
+            print(f"Edited message ID {message.id} successfully.")
         except Exception as e:
-            print(f"Failed to edit caption: {e}")
+            print(f"Failed to edit message ID {message.id}: {e}")
 
 # Run bot
 app.run()
