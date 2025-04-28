@@ -4,7 +4,7 @@ from pyrogram.types import Message
 # Bot configuration
 API_ID = 19593445
 API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"
-BOT_TOKEN = "7558999351:AAG0N7kKfEv-ZwQMqMqo6TM84zmHSvuMNoE"
+BOT_TOKEN = "7834936430:AAFL6GZDWXeSbZaJ870dSN6wdZObWrrvTrc"
 
 # Create bot instance
 app = Client(
