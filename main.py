@@ -31,7 +31,7 @@ async def replace_caption(client: Client, message: Message):
         )
 
         try:
-            await message.edit_caption(new_caption, parse_mode="Markdown")
+            await message.edit_caption(new_caption)  # ❗ No parse_mode here
             print("Caption edited successfully.")
         except Exception as e:
             print(f"Failed to edit caption: {e}")
