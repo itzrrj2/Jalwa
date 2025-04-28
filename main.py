@@ -9,7 +9,7 @@ API_HASH = "f78a8ae025c9131d3cc57d9ca0fbbc30"
 BOT_TOKEN = "7834936430:AAFL6GZDWXeSbZaJ870dSN6wdZObWrrvTrc"
 
 # Channels list
-CHANNEL_IDS = ["-1002639969488", "-1002372000442"]
+CHANNEL_IDS = ["jalwa_bet_prediction", "jalwawiny"]
 # Example: ["jalwawin", "jalwagame4"] or ["-1001234567890", "-1009876543210"]
 
 # Create bot instance
