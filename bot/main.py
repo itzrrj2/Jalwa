@@ -22,8 +22,8 @@ async def start_handler(client, message: Message):
         [InlineKeyboardButton("Girl", callback_data="gender_girl")]
     ])
     await message.reply(
-        "✨ *Welcome to AnonyChat!* ✨\nPlease choose your gender:",
-        parse_mode="MarkdownV2",
+        "✨ <b>Welcome to AnonyChat!</b>\nPlease choose your gender:",
+        parse_mode="HTML",
         reply_markup=keyboard
     )
 
@@ -39,8 +39,8 @@ async def handle_gender(client, callback_query):
         [InlineKeyboardButton("Chat with Girl", callback_data="chat_girl")]
     ])
     await callback_query.message.edit_text(
-        "🔗 *Main Menu*\nWho do you want to chat with?",
-        parse_mode="MarkdownV2",
+        "🔗 <b>Main Menu</b>\nWho do you want to chat with?",
+        parse_mode="HTML",
         reply_markup=keyboard
     )
 
