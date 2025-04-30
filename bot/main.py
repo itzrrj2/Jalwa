@@ -23,7 +23,7 @@ async def start_handler(client, message: Message):
     ])
     await message.reply(
         "✨ *Welcome to AnonyChat!* ✨\nPlease choose your gender:",
-        parse_mode="markdown",
+        parse_mode="MarkdownV2",
         reply_markup=keyboard
     )
 
@@ -40,7 +40,7 @@ async def handle_gender(client, callback_query):
     ])
     await callback_query.message.edit_text(
         "🔗 *Main Menu*\nWho do you want to chat with?",
-        parse_mode="markdown",
+        parse_mode="MarkdownV2",
         reply_markup=keyboard
     )
 
@@ -58,14 +58,12 @@ async def match_user(client, user_id, preference, message):
     for other_id in waiting_list:
         other = users.get(other_id)
         if other and other["state"] == "waiting" and other_id != user_id:
-            # Chat with Stranger → match anyone
             if preference == "stranger" and (
                 other["preference"] == "stranger" or user["gender"] == other["preference"]
             ):
                 await connect_users(client, user_id, other_id)
                 waiting_list.remove(other_id)
                 return
-            # Chat with Boy/Girl → match only that gender
             if other["gender"] == preference and (
                 other["preference"] == "stranger" or user["gender"] == other["preference"]
             ):
