@@ -85,7 +85,7 @@ async def connect_users(client, user1, user2):
     await client.send_message(user1, "✅ You are now connected! Say hi!")
     await client.send_message(user2, "✅ You are now connected! Say hi!")
 
-@app.on_message(filters.text & ~filters.edited)
+@app.on_message(filters.text)
 async def relay_message(client, message: Message):
     user_id = message.from_user.id
     user = users.get(user_id)
